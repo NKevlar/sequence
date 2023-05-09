@@ -2,6 +2,9 @@
 
 # dependencies
 /sequence-frontend/node_modules
+/sequence-backend/__pycache__
+/sequence-backend/backend/__pycache__
+
 /.pnp
 .pnp.js
 
