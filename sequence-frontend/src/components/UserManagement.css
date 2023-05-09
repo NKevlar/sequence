@@ -1,0 +1,9 @@
+.tag {
+    cursor:pointer;
+    color:blue;
+    text-decoration:underline;
+  }
+
+.header {
+  font-family: 'Exo 2', sans-serif;
+}

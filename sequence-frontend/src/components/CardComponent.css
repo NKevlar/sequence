@@ -1,0 +1,72 @@
+  /* Board.css */
+  .sequence {
+    display: flex;
+  }
+
+  .player-cards {
+    margin-left: 10%;
+  }
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 8px;
+    width: 40%;
+  }
+  
+  .row {
+    grid-template-columns: repeat(10, 1fr);
+    gap: 8px;
+  }
+  
+  .card {
+    width: 50px;
+    height: 70px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .card-value {
+    font-size: 15px;
+    font-weight: bold;
+  }
+  
+  .card-symbol {
+    margin: 5px 0 0 5px;
+  }
+  
+  .card-symbol svg {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .card:hover {
+    background-color: #f2f2f2;
+  }
+  
+  .card.occupied {
+    background-color: #f8f8f8;
+    cursor: not-allowed;
+  }
+  
+  .card.empty {
+    cursor: not-allowed;
+  }
+  
+  .coin {
+    width: 50%;
+    height: 35%;
+    background-color: #f3d25c;
+    border-radius: 50%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  }

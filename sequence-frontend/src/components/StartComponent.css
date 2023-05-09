@@ -1,0 +1,16 @@
+.main-button {
+    margin: 10px;
+    height: 10%;
+}
+
+.alert-custom {
+    position: fixed;
+    left: 30%;
+    background-color: #F8D7DA;
+    border-color: #F5C6CB;
+    color: #721C24;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+  }
