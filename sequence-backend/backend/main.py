@@ -15,6 +15,7 @@ class Game_Renderer:
     def __init__(self) -> None:
         self.games: Dict = {}
         self.players: Dict = {}
+        self.game_play_response: Dict = {}
 
     def create_board(self, user: str):
         session_id = str(uuid.uuid4())
@@ -25,6 +26,10 @@ class Game_Renderer:
         print("Current user added to board")
         self.games[session_id] = newGame
         self.players[session_id] = [player]
+        self.game_play_response[session_id] = {
+            'players' : self.players[session_id],
+            'winner' : ''
+        }
         result = {'game' : newGame, 'game_session' : session_id, 'players' : self.players[session_id]}
         return result
 
@@ -39,10 +44,7 @@ class Game_Renderer:
         return self.players[session_id]
     
     def fetch_players(self, session_id: str):
-        game: Game = self.games[session_id]
-        if game.winner:
-            return {'winner' : game.winnerUserId}
-        return self.players[session_id]
+        return self.game_play_response[session_id]
         
     def game_play(self, player_name: str, session_id: str, pos_x: int, pos_y: int):
         game: Game = self.games[session_id]
@@ -52,13 +54,13 @@ class Game_Renderer:
             return click_reponse
         else:
             game_players: List[Player] = self.players[session_id]
+            print("player_name : ", player_name)
+            print("game_players : ", game_players)
             current_player = [x for x in game_players if x.playerName == player_name][0]
             opponent_players = [x for x in game_players if x.playerName != player_name]
             print(f"{current_player.playerName}'s cards : {current_player.playerCards}")
             print(f"{current_player.playerName} selected : ", game.board[pos_x][pos_y])
-            click_response = self.click(game, session_id, current_player, opponent_players, pos_x, pos_y)
-            click_response.update({'players' : self.players[session_id]})
-            return click_response
+            return self.click(game, session_id, current_player, opponent_players, pos_x, pos_y)
 
     def display_board(self, game: Game):
         print("Board :")
@@ -81,6 +83,7 @@ class Game_Renderer:
             'game_play' : False,
             'winner' :  '',
             'out_of_deck' : False,
+            'players' : self.players[session_id]
         }
         
         print("ok : ", ok)
@@ -95,7 +98,6 @@ class Game_Renderer:
             print(f"{currentPlayer.playerName} wins")
             # self.updateUserData(1, game.winnerUserId)
             self.players[session_id] = []
-            # self.games[session_id] = []
             response['winner'] = game.winnerUserId
 
         if not game.deck:

@@ -15,10 +15,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from server import views
-# from channels.routing import ProtocolTypeRouter, URLRouter
-# from backend.websockets import SocketConnection
+from backend.socket import PlayersDataConsumer
+
+websocket_urlpatterns = [
+    path("ws/", PlayersDataConsumer.as_asgi()),
+]
 
 urlpatterns = [
     path('',views.index,name='index'),
@@ -29,12 +32,5 @@ urlpatterns = [
     path("refresh/", views.refresh_players, name="refresh_plyers"),
     path('register/', views.create_user, name='create_user'),
     path('login/', views.login_user, name='login'),
+    path('ws/', include(websocket_urlpatterns)),
 ]
-
-# websocket_urlpatterns = [
-#     path('ws/', consumers.MyConsumer.as_asgi()),
-# ]
-
-# application = ProtocolTypeRouter({
-#     'websocket': URLRouter(websocket_urlpatterns)
-# })

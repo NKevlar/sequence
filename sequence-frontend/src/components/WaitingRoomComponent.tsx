@@ -63,7 +63,7 @@ const WaitingRoomComponent: React.FC<WaitingRoomProps> = ({gameCode, players, cu
           setGameStart(false)
           setGameStart(true)
         } else {
-          setPlayersData(response.data)
+          setPlayersData(response.data['players'])
         }
         if (gameStart) {
           setGameStart(false)

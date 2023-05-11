@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     'rest_framework',
-    'pymongo'
+    'pymongo',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -71,6 +72,18 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "setup.wsgi.application"
+
+ASGI_APPLICATION = 'setup.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('localhost', 6379)],
+        },
+    },
+}
+
 
 
 # Database
@@ -123,6 +136,7 @@ CORS_ALLOWED_ORIGINS = [
     ''
     'http://localhost:3000',
     'http://192.168.1.162:3000',
-    'http://172.20.10.2:3000'  # Add the URL of your frontend app here
+    'http://172.20.10.2:3000',
+    'http://192.168.1.162:8000'  # Add the URL of your frontend app here
     # Add more allowed origins if needed
 ]

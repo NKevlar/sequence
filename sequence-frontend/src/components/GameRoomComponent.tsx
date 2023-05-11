@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import BACKEND from '../constants';
 import SequenceBoard from './BoardComponent';
@@ -22,6 +22,39 @@ const GameRoomComponent: React.FC<GameRoomProps> = ({gameCode, players, currentP
     const [showBoard, setShowBoard] = useState<boolean>(true);
     const [playersData, setPlayersData] = useState<any>(players);
     const [goToStart, setGoToStart] = useState<boolean>(false);
+
+    const socket = new WebSocket('ws://192.168.1.162:8000/ws/');
+    socket.onopen = () => {
+      console.log('Connected to websocket server');
+    };
+    socket.onclose = () => {
+      console.log('Disconnected from websocket server');
+    };
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data)
+      console.log("Recieving data from websocket : ", data);
+      setPlayersData(data[gameCode]['players']);
+      setShowBoard(false)
+      setShowBoard(true)
+    };
+
+    /*
+    useEffect(() => {
+      socket.onopen = () => {
+        console.log('Connected to websocket server');
+      };
+      socket.onclose = () => {
+        console.log('Disconnected from websocket server');
+      };
+      socket.onmessage = (event) => {
+        const data = JSON.parse(event.data)
+        console.log("Recieving data from websocket : ", data);
+        setPlayersData(data[gameCode]['players']);
+        setShowBoard(false)
+        setShowBoard(true)
+      };
+    }, []);
+    */
 
     if (notifyMessage) {
       setNotify(true)
@@ -54,6 +87,11 @@ const GameRoomComponent: React.FC<GameRoomProps> = ({gameCode, players, currentP
               }, 5000)
             }
             setPlayersData(response.data['players'])
+            socket.send(JSON.stringify({
+              session_id: gameCode,
+              players: response.data['players'],
+              winner: response.data['winner']
+            }));
         } catch (error) {
           console.error('API call error:', error);
         }

@@ -72,7 +72,7 @@ class Game:
                 break
             d += 1
 
-        obj.playerScore += total >= 2
+        obj.playerScore += total >= 3
 
         # check left - right
 
@@ -92,7 +92,7 @@ class Game:
                 break
             c += 1
 
-        obj.playerScore += total >= 2
+        obj.playerScore += total >= 3
 
         # check left - diagonal
 
@@ -115,7 +115,7 @@ class Game:
             c += 1
             d += 1
 
-        obj.playerScore += total >= 2
+        obj.playerScore += total >= 3
 
         # check right - diagonal
 
@@ -138,7 +138,7 @@ class Game:
             c += 1
             d -= 1
 
-        obj.playerScore += total >= 2
+        obj.playerScore += total >= 3
         if obj.playerScore > 0:
             self.winner = True
             self.winnerUserId = obj.playerName
