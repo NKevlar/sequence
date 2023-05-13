@@ -20,38 +20,6 @@ const WaitingRoomComponent: React.FC<WaitingRoomProps> = ({gameCode, players, cu
     setNeedRefresh(!needRefresh)
   }
 
-  // const ws = new WebSocket('wss://example.com/socket');
-
-  // ws.addEventListener('open', () => {
-  //   console.log('WebSocket connection established');
-    
-  //   // send the API request
-  //   ws.send(JSON.stringify({
-  //     endpoint: `${BACKEND_URL}${BACKEND_PORT}/refresh/`,
-  //     method: 'POST',
-  //     data: {'sessionId' : gameCode}
-  //   }));
-  // });
-
-  // ws.addEventListener('message', (event) => {
-  //   const response = JSON.parse(event.data);
-  //   console.log('Received API response:', response);
-  //   setPlayersData(response.data)
-  // });
-  
-  // ws.addEventListener('close', () => {
-  //   console.log('WebSocket connection closed');
-  // });
-
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     fetchPlayers()
-  //   }, 5000);
-  //   return () => {
-  //     clearInterval(intervalId);
-  //   };
-  // }, []);
-
   const fetchPlayers = async () => {
     try {
       const response = await axios.post(`${BACKEND['BACKEND_URL']}:${BACKEND['BACKEND_PORT']}/refresh/`, {
@@ -76,7 +44,6 @@ const WaitingRoomComponent: React.FC<WaitingRoomProps> = ({gameCode, players, cu
 
   const handleGameStart = async () => {
     setGameStart(true)
-    // clearInterval(intervalId);
   }
 
   return (
@@ -88,6 +55,7 @@ const WaitingRoomComponent: React.FC<WaitingRoomProps> = ({gameCode, players, cu
         <div>
           <p>Waiting for other players to join...</p>
           <p>Number of players joined: {PlayersData.length}</p>
+          <p>Game code : {gameCode}</p>
           <button className="main-button" onClick={handleGameStart}>Start Game</button>
         </div>
       )}

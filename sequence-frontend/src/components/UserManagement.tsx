@@ -37,7 +37,6 @@ const UserManager = () => {
         password: password,
         email: email
       }
-      console.log("body : ", postData)
       const response = await axios.post(`${BACKEND['BACKEND_URL']}:${BACKEND['BACKEND_PORT']}/${urlPath}`, postData);
       console.log("response : ", response.data);
       setUsername('');
@@ -51,7 +50,7 @@ const UserManager = () => {
     } catch (error) {
       console.error("Error = " , error.response);
       console.log(error.response.status)
-      if (error.response.status ===  HttpStatusCode.BadRequest) {
+      if ( error.response.status && error.response.status ===  HttpStatusCode.BadRequest) {
         let errorMesssage = ''
         Object.keys(error.response.data).forEach(key => {  
             console.log(`Error : ${error.response.data[key]}`)
@@ -72,7 +71,7 @@ const UserManager = () => {
   };
 
   return (
-    <div>
+    <div className='center-component'>
      {error && (
         <Alert variant="danger" onClose={() => setError("")} className="alert-custom" dismissible={false}>
         {error}
@@ -82,20 +81,22 @@ const UserManager = () => {
          <div>
          <h1 className='header'>{isLogin ? "Login" : "Create Account"}</h1>
          <form onSubmit={handleSubmit}>
-         <label>
+         <label className='header'>
              Username:
              <input
              type="text"
+             className='input'
              value={username}
              onChange={(e) => setUsername(e.target.value)}
              />
          </label>
          <br />
          <br />
-         <label>
+         <label className='header'>
              Password:
              <input
              type="password"
+             className='input'
              value={password}
              onChange={(e) => setPassword(e.target.value)}
              />
@@ -104,10 +105,11 @@ const UserManager = () => {
          <br />
          { !isLogin &&
             <div>
-            <label>
+            <label className='header'>
                 Email:
                 <input
                     type="email"
+                    className='input'
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
@@ -120,7 +122,7 @@ const UserManager = () => {
          </form>
          <br />
          { isLogin &&
-            <label className="tag" onClick={() => {
+            <label className="tag header" onClick={() => {
                 setLogin(false)
             }}> Need an account? </label>
          }

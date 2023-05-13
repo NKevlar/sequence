@@ -1,6 +1,5 @@
 from django.shortcuts import render
-
-# Create your views here.
+import logging
 from django.http import HttpResponse, HttpRequest, JsonResponse
 from backend.main import Game_Renderer
 import json
@@ -70,21 +69,22 @@ def login_user(request):
     data = json.loads(body)
     username = data.get('username')
     password = data.get('password')
+    logging.info("AUTHENTICATING USER " + username)
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
+        logging.info("SUCCESSFUL USER LOGIN FOR " + username)
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'success': False, 'message': 'Invalid credentials'})
 
 @api_view(['POST'])
 def create_user(request: HttpRequest):
+    logging.debug("SERIALIZING DATA")
     serializer = UserSerializer(data=request.data)
-    print("serialized data : ", serializer)
     if serializer.is_valid():
-        print('validated')
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     else:
-        print("validation failed")
+        logging.debug("VALIDATION FAILED FOR ACCOUNT ")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

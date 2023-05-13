@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import logging
+from logging.config import dictConfig
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,6 +29,72 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['0.0.0.0', '172.20.10.2', '192.168.1.162', '127.0.0.1']
 
+# Disable the default logging configuration
+LOGGING_CONFIG = None
+
+# Define your custom logging configuration
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+        "file": {
+            "class": "logging.FileHandler",
+            "filename": "/Users/kevlarn/GMU/Coursework/sequence/server_logs.log",
+            "level": "INFO",
+        },
+    },
+    "loggers": {
+        "root": {
+            "handlers": ["console", "file"],
+            'level': 'DEBUG',
+        },
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+        },
+    },
+    "formatters": {
+        "standard": {
+            "format" : '%(asctime)s [%(levelname)s] %(name)s: %(message)s',
+        },
+        'default': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s: %(message)s',
+        },
+        'debug': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s (DEBUG): %(message)s',
+        },
+        'warning': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s (WARNING): %(message)s',
+        },
+        'error': {
+            'format': '%(asctime)s [%(levelname)s] %(name)s (ERROR): %(message)s',
+        }
+    }
+}
+
+# Assign specific formatters to handlers based on log levels
+LOGGING['handlers']['console']['formatter'] = 'default'
+LOGGING['loggers']['django']['handlers'] = ['console']
+LOGGING['loggers']['django']['level'] = 'DEBUG'
+
+# Assign specific formatters to handlers for warning and error logs
+LOGGING['handlers']['console_warning'] = {
+    'class': 'logging.StreamHandler',
+    'formatter': 'warning',
+}
+LOGGING['loggers']['django']['handlers'].append('console_warning')
+
+LOGGING['handlers']['console_error'] = {
+    'class': 'logging.StreamHandler',
+    'formatter': 'error',
+}
+LOGGING['loggers']['django']['handlers'].append('console_error')
+
+# Configure the root logger
+dictConfig(LOGGING)
 
 # Application definition
 
@@ -39,7 +107,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'rest_framework',
     'pymongo',
-    'channels'
+    'channels',
+    "django_extensions",
 ]
 
 MIDDLEWARE = [
@@ -137,6 +206,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://192.168.1.162:3000',
     'http://172.20.10.2:3000',
+    'http://172.20.10.2:8000',
     'http://192.168.1.162:8000'  # Add the URL of your frontend app here
     # Add more allowed origins if needed
 ]

@@ -1,3 +1,4 @@
+import logging
 class Player:
     def __init__(self, name, order):
         self.playerName = name
@@ -23,19 +24,17 @@ class Player:
         return "JH" if "JH" in self.playerCards else "JS"
 
     def hasChosenValid(self, x, y, opponentBoxes, card):
-        print("checking validity...")
+        logging.debug("CHECKING VALIDITY...")
         if self.playerBox[x][y]:
-            print("ALREADY THERE")
+            logging.error("COIN ALREADY EXISTS.")
             return False
 
         for opponentBox in opponentBoxes:
             if opponentBox[x][y]:
                 if self.hasRemove():
-                    print("REM: ", self.getRemove())
+                    logging.debug("REMOVING CARD " + self.getRemove())
                     self.playerCards.remove(self.getRemove())
                     return 2
-
-                print("OPPO THERE")
                 return False
 
         if card in self.playerCards:
@@ -45,5 +44,4 @@ class Player:
             self.playerCards.remove(self.getWildCard())
             return 1
 
-        print("HEHEH")
         return False

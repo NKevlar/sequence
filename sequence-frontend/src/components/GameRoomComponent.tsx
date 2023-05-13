@@ -23,7 +23,7 @@ const GameRoomComponent: React.FC<GameRoomProps> = ({gameCode, players, currentP
     const [playersData, setPlayersData] = useState<any>(players);
     const [goToStart, setGoToStart] = useState<boolean>(false);
 
-    const socket = new WebSocket('ws://192.168.1.162:8000/ws/');
+    const socket = new WebSocket('wss://172.20.10.2:8000/ws/');
     socket.onopen = () => {
       console.log('Connected to websocket server');
     };
@@ -37,24 +37,6 @@ const GameRoomComponent: React.FC<GameRoomProps> = ({gameCode, players, currentP
       setShowBoard(false)
       setShowBoard(true)
     };
-
-    /*
-    useEffect(() => {
-      socket.onopen = () => {
-        console.log('Connected to websocket server');
-      };
-      socket.onclose = () => {
-        console.log('Disconnected from websocket server');
-      };
-      socket.onmessage = (event) => {
-        const data = JSON.parse(event.data)
-        console.log("Recieving data from websocket : ", data);
-        setPlayersData(data[gameCode]['players']);
-        setShowBoard(false)
-        setShowBoard(true)
-      };
-    }, []);
-    */
 
     if (notifyMessage) {
       setNotify(true)

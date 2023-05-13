@@ -58,11 +58,13 @@ const Start: React.FC<StartProps> = ({loginId}) => {
   return (
     <div>
       { !showBoard && (
-        <div>
-          <h1>Let's play Sequence!</h1>
-          <button className="main-button" onClick={handleCreateGame}>Create Game</button>
-          <br></br>
-          <button className="main-button" onClick={handleJoinGame}>Join Game</button>
+        <div className='center-component'>
+          <div>
+            <h1 className="title">Let's play Sequence!</h1>
+            <button className="main-button" onClick={handleCreateGame}>Create Game</button>
+            <br></br>
+            <button className="main-button" onClick={handleJoinGame}>Join Game</button>
+          </div>
         </div>
       )}
       {JoinModal && (

@@ -1,6 +1,7 @@
 import random
 from collections import defaultdict
 from backend.player import Player
+import logging
 
 
 class Game:
@@ -53,7 +54,7 @@ class Game:
         return False
 
     def checkSequence(self, x, y, obj: Player):
-        print("checking sequence...")
+        logging.debug("CHECKING SEQUENCE...")
         # check up - down
 
         total = 0
@@ -149,7 +150,7 @@ class Game:
 
         ok = player.hasChosenValid(x, y, opponents, self.board[x][y])
         if ok == 0:
-            print("NOT VALID", self.board[x][y], player.playerCards)
+            logging.error(f"NOT VALID")
 
         elif ok == 1:
             player.playerBox[x][y] = 1

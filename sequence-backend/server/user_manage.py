@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 import re
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+import logging
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,7 +12,6 @@ class UserSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def is_valid_password(self, password: str) -> bool:
-        print("inside is_valid_password")
         # Password should have at least one uppercase letter
         if not re.search(r"[A-Z]", password):
             raise ValidationError("Password should have at least one uppercase letter")
@@ -28,19 +28,34 @@ class UserSerializer(serializers.ModelSerializer):
         if not re.search(r"\W", password):
             raise ValidationError("Password should have at least one special character")
 
+        # Password should have atleast 8 characters
         if len(password) < 8:
             raise ValidationError("Password must be at least 8 characters long")
 
+        # Password should not exceed the maximum length
+        if len(password) > 20:
+            raise serializers.ValidationError("Password length exceeded")
+
         return True
 
+    def validate_username(self, value):
+        # Username should not exceed the maximum length
+        if len(value) > 20:
+            raise serializers.ValidationError("Username length exceeded")
+        return value
+
+    def validate_email(self, value):
+        # Email should not exceed the maximum length
+        if len(value) > 100:
+            raise serializers.ValidationError("Email length exceeded")
+        return value
+
     def validate_password(self, password):
-        print("inside password validation")
         try:
             if self.is_valid_password(password):
                 validate_password(password)
                 return password
         except ValidationError as e:
-            # If password does not meet the validation criteria, raise an error
             raise e
 
     def create(self, validated_data):
@@ -49,5 +64,5 @@ class UserSerializer(serializers.ModelSerializer):
             validated_data['email'],
             validated_data['password']
         )
-        print('Account created : ', user)
+        logging.info('ACCOUNT CREATED FOR ' + user.username)
         return user
