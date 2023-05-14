@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import BACKEND from '../constants';
 import GameRoomComponent from './GameRoomComponent';
+import './BoardComponent.css'
 
 interface WaitingRoomProps {
   gameCode: string;
@@ -22,10 +23,10 @@ const WaitingRoomComponent: React.FC<WaitingRoomProps> = ({gameCode, players, cu
 
   const fetchPlayers = async () => {
     try {
-      const response = await axios.post(`${BACKEND['BACKEND_URL']}:${BACKEND['BACKEND_PORT']}/refresh/`, {
+      const response = await axios.post(`https://${BACKEND['BACKEND_IP']}:${BACKEND['BACKEND_PORT']}/refresh/`, {
             'sessionId' : gameCode,
         });
-        console.log('API call response:', response.data);
+        console.log('player data:', response.data);
         if (response.data['winner']) {
           setNotifyMessage(`${response.data['winner']}! won the game 👏`)
           setGameStart(false)
@@ -47,16 +48,18 @@ const WaitingRoomComponent: React.FC<WaitingRoomProps> = ({gameCode, players, cu
   }
 
   return (
-    <div>
+    <div className="waiting-room">
       { needRefresh &&
-        <button className="main-button " onClick={fetchPlayers}>Refresh</button>
+        <div className="refresh-div">
+        <button className="main-button refresh-button button-3" onClick={fetchPlayers}></button>
+        </div>
       }
       {!gameStart && (
-        <div>
-          <p>Waiting for other players to join...</p>
-          <p>Number of players joined: {PlayersData.length}</p>
-          <p>Game code : {gameCode}</p>
-          <button className="main-button" onClick={handleGameStart}>Start Game</button>
+        <div className="waitroom-content">
+          <p className="waitroom-text">Waiting for other players to join...</p>
+          <p className="waitroom-text">Number of players joined: {PlayersData.length}</p>
+          <p className="waitroom-text">Game code : {gameCode}</p>
+          <button className="button-3 main-button start-game-button" onClick={handleGameStart}>Start Game</button>
         </div>
       )}
       {

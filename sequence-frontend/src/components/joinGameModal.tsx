@@ -18,14 +18,14 @@ const JoinGameModal: React.FC<JoinGameModalProps> = ({ message, onSubmit, onClos
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2>{message}</h2>
+        <h2 className="waitroom-text">{message}</h2>
         <input
           type="text"
           value={gameCode}
           onChange={(e) => setGameCode(e.target.value)}
         />
-        <button onClick={handleSubmit}>Submit</button>
-        <button onClick={onClose}>Close</button>
+        <button className="button-3" onClick={handleSubmit}>Submit</button>
+        <button className="button-3" onClick={onClose}>Close</button>
       </div>
     </div>
   );

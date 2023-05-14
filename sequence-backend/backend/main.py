@@ -89,13 +89,13 @@ class Game_Renderer:
 
         if game.winner:
             logging.debug(f"{currentPlayer.playerName} WINS")
-            # self.updateUserData(1, game.winnerUserId)
-            self.players[session_id] = []
+            self.updateUserData(1, game.winnerUserId)
+            # self.players[session_id] = []
             response['winner'] = game.winnerUserId
 
         if not game.deck:
             logging.debug(f"{currentPlayer.playerName} IS OUT OF CARDS")
-            # self.updateUserData(0, game.winnerUserId)
+            self.updateUserData(0, game.winnerUserId)
             self.players[session_id].remove(currentPlayer)
             response['outOfDeck'] = True
 
@@ -103,7 +103,7 @@ class Game_Renderer:
 
     def updateUserData(self, score, username):
         logging.info("ATTEMPTING MONGO DB CONNECTION")
-        mongo_client = pymongo.MongoClient("PROVODE MONGO CONNECTION STRING HERE")
+        mongo_client = pymongo.MongoClient("mongodb+srv://kevlar24:Kevlar1997!@cluster0.ojxaxqi.mongodb.net/")
         sequence_db = mongo_client["sequence"]
         players_collection = sequence_db['players']
         find_query = {'playerName' : username}
@@ -132,7 +132,8 @@ class Game_Renderer:
 
         gamesPlayed += 1
 
-        update_query = {'playerName': username}, {"$set": {
+        filter_query = {'playerName': username}
+        update_query = {"$set": {
                 'playerName': username,
                 'gamesWon' : gamesWon,
                 'sequenceMade' : sequenceMade,
@@ -140,6 +141,6 @@ class Game_Renderer:
                 'continousWin' : continousWin,
                 'gamesPlayed' : gamesPlayed
             }}
-        players_collection.update_one(update_query, upsert=True)
+        players_collection.update_one(filter_query, update_query, upsert=True)
         
         logging.debug('UPDATED PLAYER STATS FOR '+ username)

@@ -11,8 +11,8 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ message, onClose 
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2>{message}</h2>
-        <button onClick={onClose}>Ok</button>
+        <h2 className="waitroom-text">{message}</h2>
+        <button className="button-3" onClick={onClose}>Ok</button>
       </div>
     </div>
   );

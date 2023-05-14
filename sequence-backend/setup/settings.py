@@ -27,7 +27,10 @@ SECRET_KEY = "django-insecure-zqypip^r_0qe(j13^j91j=5p6o(ngd6a)$e==^0&mkt%!t(hzh
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', '172.20.10.2', '192.168.1.162', '127.0.0.1']
+ALLOWED_HOSTS = ['172.20.10.2', # home ip
+                 '192.168.1.162', # mason secure ip
+                 '127.0.0.1', # localhost
+                 '0.0.0.0'] 
 
 # Disable the default logging configuration
 LOGGING_CONFIG = None

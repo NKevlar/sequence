@@ -37,13 +37,18 @@ const UserManager = () => {
         password: password,
         email: email
       }
-      const response = await axios.post(`${BACKEND['BACKEND_URL']}:${BACKEND['BACKEND_PORT']}/${urlPath}`, postData);
-      console.log("response : ", response.data);
+      const response = await axios.post(`https://${BACKEND['BACKEND_IP']}:${BACKEND['BACKEND_PORT']}/${urlPath}`, postData);
       setUsername('');
       setPassword('');
       setError('');
       if (isLogin && response.data['success']) {
         setLoginId(username)
+      } else if (isLogin && !response.data['success']) {
+        setError(response.data["message"])
+        setTimeout(() => {
+            setError('')
+          }, 5000)
+        return
       } else if (!isLogin && response.data['username']) {
         setLogin(true)
       }
@@ -52,14 +57,13 @@ const UserManager = () => {
       console.log(error.response.status)
       if ( error.response.status && error.response.status ===  HttpStatusCode.BadRequest) {
         let errorMesssage = ''
-        Object.keys(error.response.data).forEach(key => {  
-            console.log(`Error : ${error.response.data[key]}`)
-            errorMesssage += `${key} : ${error.response.data[key]} `;
+        Object.keys(error.response.data).forEach(key => {
+            errorMesssage += `${key} : ${error.response.data[key]}, `;
           })
         setError(errorMesssage)
         setTimeout(() => {
             setError('')
-          }, 5000)
+          }, 10000)
         return
       }
       setError(error.response.data.detail);
@@ -71,17 +75,18 @@ const UserManager = () => {
   };
 
   return (
-    <div className='center-component'>
+    <div className="background-image">
      {error && (
         <Alert variant="danger" onClose={() => setError("")} className="alert-custom" dismissible={false}>
         {error}
         </Alert>
      )}
      { !loginId &&  (
-         <div>
-         <h1 className='header'>{isLogin ? "Login" : "Create Account"}</h1>
+        <div className='center-component'>
+        <div>
+         <h1 className='account-text'>{isLogin ? "Login" : "Create Account"}</h1>
          <form onSubmit={handleSubmit}>
-         <label className='header'>
+         <label className='account-text'>
              Username:
              <input
              type="text"
@@ -92,7 +97,7 @@ const UserManager = () => {
          </label>
          <br />
          <br />
-         <label className='header'>
+         <label className='account-text'>
              Password:
              <input
              type="password"
@@ -105,7 +110,7 @@ const UserManager = () => {
          <br />
          { !isLogin &&
             <div>
-            <label className='header'>
+            <label className='account-text'>
                 Email:
                 <input
                     type="email"
@@ -118,15 +123,15 @@ const UserManager = () => {
              </div>
          }
          <br />
-         <button type="submit">{isLogin ? "Login" : "Register"}</button>
+         <button className="button-3" type="submit">{isLogin ? "Login" : "Register"}</button>
          </form>
          <br />
          { isLogin &&
-            <label className="tag header" onClick={() => {
+            <label className="tag account-text" onClick={() => {
                 setLogin(false)
             }}> Need an account? </label>
          }
-         {/* {error && <div>{error}</div>} */}
+         </div>
         </div>
      )}
     { loginId &&

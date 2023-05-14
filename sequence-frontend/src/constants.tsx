@@ -1,4 +1,4 @@
-const BACKEND_URL: string = 'https://172.20.10.2';
+const BACKEND_IP: string = '192.168.1.162';
 const BACKEND_PORT: string = '8000';
 
-export default { BACKEND_URL, BACKEND_PORT };
+export default { BACKEND_IP, BACKEND_PORT };

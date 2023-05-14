@@ -23,7 +23,7 @@ const GameRoomComponent: React.FC<GameRoomProps> = ({gameCode, players, currentP
     const [playersData, setPlayersData] = useState<any>(players);
     const [goToStart, setGoToStart] = useState<boolean>(false);
 
-    const socket = new WebSocket('wss://172.20.10.2:8000/ws/');
+    const socket = new WebSocket(`ws://${BACKEND['BACKEND_IP']}:${BACKEND['BACKEND_PORT']}/ws/`);
     socket.onopen = () => {
       console.log('Connected to websocket server');
     };
@@ -47,13 +47,13 @@ const GameRoomComponent: React.FC<GameRoomProps> = ({gameCode, players, currentP
         console.log(`row : ${row}, col : ${col}`)
         try {
           let gameOver = false;
-          const response = await axios.post(`${BACKEND['BACKEND_URL']}:${BACKEND['BACKEND_PORT']}/play/`, {
+          const response = await axios.post(`https://${BACKEND['BACKEND_IP']}:${BACKEND['BACKEND_PORT']}/play/`, {
                 'playerName' : currentPlayer,
                 'sessionId' : gameCode,
                 'positionX' : row,
                 'positionY' : col
             });
-            console.log('API call response:', response.data);
+            console.log('Response of game play:', response.data);
             if (response.data['winner']) {
               setNotify(true)
               setNotification(`${response.data['winner']}! won the game 👏`)

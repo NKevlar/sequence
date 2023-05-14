@@ -1,6 +1,6 @@
 /** @jsxImportSource react **/
 import * as React from 'react';
-import "./CardComponent.css";
+import "./BoardComponent.css";
 import {ReactComponent as SpadeIcon} from "../svg/spade.svg";
 import {ReactComponent as HeartIcon} from "../svg/hearts.svg";
 import {ReactComponent as DiamondIcon} from "../svg/diamond.svg";
@@ -133,15 +133,17 @@ const SequenceBoard: React.FC<SequenceBoardProps> = ({players, currentPlayer, ha
     })
 
   return (
+    <div className="game-margin">
     <div className='sequence'>
         <div>
-            <h1>Sequence Game Board</h1>
+            <h1 className="sequence-title">Sequence Game Board</h1>
             <Board players={players} cards={board} onPlaceCoin={handlePlaceCoin} />
         </div>
         <div className='player-cards'>
-            <h1>{playerName}'s cards</h1>
+            <h1 className="player-title">{playerName}'s cards</h1>
             <Board players={players} cards={currentPlayerCards} />
         </div>
+    </div>
     </div>
   );
 };

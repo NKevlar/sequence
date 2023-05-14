@@ -18,12 +18,11 @@ const Start: React.FC<StartProps> = ({loginId}) => {
   const [players, setPlayers] = useState<any>([]);
   
   const handleCreateGame = async () => {
-    console.log('Create Game button clicked');
+    console.log('Creating game');
     try {
-      const response = await axios.post(`${BACKEND['BACKEND_URL']}:${BACKEND['BACKEND_PORT']}/create/`, {
+      const response = await axios.post(`https://${BACKEND['BACKEND_IP']}:${BACKEND['BACKEND_PORT']}/create/`, {
           'userName' : loginId
       });
-      console.log(response)
       console.log('API call response:', response.data);
       setGameCode(response.data['game_session'])
       setPlayers(response.data['players'])
@@ -34,7 +33,6 @@ const Start: React.FC<StartProps> = ({loginId}) => {
   }
 
   const handleJoinGame = async () => {
-    console.log('Join Game button clicked');
     setJoinModal(true)
   }
 
@@ -42,7 +40,7 @@ const Start: React.FC<StartProps> = ({loginId}) => {
     try {
       setGameCode(gameSessionId);
       console.log("gamecode : ", gameCode)
-      const response = await axios.post(`${BACKEND['BACKEND_URL']}:${BACKEND['BACKEND_PORT']}/add/`, {
+      const response = await axios.post(`https://${BACKEND['BACKEND_IP']}:${BACKEND['BACKEND_PORT']}/add/`, {
             'playerName' : loginId,
             'sessionId' : gameSessionId,
         });
@@ -58,12 +56,12 @@ const Start: React.FC<StartProps> = ({loginId}) => {
   return (
     <div>
       { !showBoard && (
-        <div className='center-component'>
+        <div className='center-component top-gap'>
           <div>
             <h1 className="title">Let's play Sequence!</h1>
-            <button className="main-button" onClick={handleCreateGame}>Create Game</button>
+            <button className="button-3 main-button" onClick={handleCreateGame}>Create Game</button>
             <br></br>
-            <button className="main-button" onClick={handleJoinGame}>Join Game</button>
+            <button className="button-3 main-button" onClick={handleJoinGame}>Join Game</button>
           </div>
         </div>
       )}
